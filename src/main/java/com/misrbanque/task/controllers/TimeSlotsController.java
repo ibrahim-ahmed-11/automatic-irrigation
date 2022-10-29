@@ -1,6 +1,6 @@
 package com.misrbanque.task.controllers;
 
-import com.misrbanque.task.helpers.ControllerHelper;
+import com.misrbanque.task.helpers.BaseController;
 import com.misrbanque.task.models.Response;
 import com.misrbanque.task.models.plots.ConfigurePlotRequestModel;
 import com.misrbanque.task.models.plots.Plot;
@@ -20,27 +20,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/slot")
 @Validated
 @RequiredArgsConstructor
-public class TimeSlotsController {
+public class TimeSlotsController extends BaseController {
 
     private final PlotService plotService;
     private final TimeSlotService timeSlotService;
 
-    @PostMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Response<Plot>> configurePlotTimeSlot(@RequestBody @Validated ConfigurePlotRequestModel requestModel) throws ChangeSetPersister.NotFoundException {
-        return ControllerHelper.formatResponse(plotService.setPlotTimeSlots(requestModel));
+        return formatResponse(plotService.setPlotTimeSlots(requestModel));
     }
 
-    @PutMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Response<TimeSlot>> editTimeSlot(@RequestBody @Validated EditTimeSlotRequestModel requestModel) throws ChangeSetPersister.NotFoundException {
-        return ControllerHelper.formatResponse(timeSlotService.editTimeSlot(requestModel));
+        return formatResponse(timeSlotService.editTimeSlot(requestModel));
     }
 
-    @DeleteMapping(value = "/{timeSlotId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(value = "/{timeSlotId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Response<Boolean>> deleteTimeSlot(@PathVariable Long timeSlotId) {
-        return ControllerHelper.formatResponse(timeSlotService.deleteTimeSlot(timeSlotId));
+        return formatResponse(timeSlotService.deleteTimeSlot(timeSlotId));
     }
 
 }

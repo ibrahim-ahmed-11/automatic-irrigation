@@ -1,6 +1,6 @@
 package com.misrbanque.task.controllers;
 
-import com.misrbanque.task.helpers.ControllerHelper;
+import com.misrbanque.task.helpers.BaseController;
 import com.misrbanque.task.models.Response;
 import com.misrbanque.task.models.plots.CreatePlotRequestModel;
 import com.misrbanque.task.models.plots.EditPlotRequestModel;
@@ -20,26 +20,26 @@ import java.util.List;
 @RequestMapping("/v1/plot")
 @Validated
 @RequiredArgsConstructor
-public class PlotController {
+public class PlotController extends BaseController {
 
     private final PlotService plotService;
 
-    @GetMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Response<List<Plot>>> getAllPlots() {
-        return ControllerHelper.formatResponse(plotService.getPlots());
+        return formatResponse(plotService.getPlots());
     }
 
-    @PostMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Response<Plot>> createPlot(@RequestBody @Validated CreatePlotRequestModel requestModel) {
-        return ControllerHelper.formatResponse(plotService.createPlot(requestModel));
+        return formatResponse(plotService.createPlot(requestModel));
     }
 
-    @PutMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Response<Plot>> updatePlot(@RequestBody @Validated EditPlotRequestModel requestModel) throws ChangeSetPersister.NotFoundException {
-        return ControllerHelper.formatResponse(plotService.editPlot(requestModel));
+        return formatResponse(plotService.editPlot(requestModel));
     }
 
 }

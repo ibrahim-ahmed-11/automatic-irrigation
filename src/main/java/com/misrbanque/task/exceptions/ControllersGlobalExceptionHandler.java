@@ -14,8 +14,8 @@ public class ControllersGlobalExceptionHandler {
 
     @ExceptionHandler
     public final ResponseEntity<?> handleException(Exception ex, WebRequest request) {
-
-        return new ResponseEntity<>(Response.fail(ex.getMessage()), HttpStatus.OK);
+        Response<String> resultResponse = new Response<>(false, ex.getMessage());
+        return new ResponseEntity<>(resultResponse, HttpStatus.OK);
     }
 
 }

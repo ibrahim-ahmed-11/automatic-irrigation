@@ -17,9 +17,10 @@ CREATE TABLE public.time_slots
     start_time              TIME            NOT NULL,
     duration_in_minutes     numeric         NOT NULL,
     water_amount            numeric         NOT NULL,
+    plot_id                 int8            NOT NULL,
 
     CONSTRAINT time_slots_pk PRIMARY KEY (id),
-    CONSTRAINT plot_fk FOREIGN KEY (id) REFERENCES plots(id)
+    CONSTRAINT plot_fk FOREIGN KEY (plot_id) REFERENCES plots(id)
 
 );
 

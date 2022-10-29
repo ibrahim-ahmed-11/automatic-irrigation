@@ -31,13 +31,14 @@ public class PlotEntity {
     @Column(name = "creation_date")
     private Date creationDate;
 
-    @OneToMany(mappedBy = "plot")
+    @OneToMany(mappedBy = "plot", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<TimeSlotEntity> timeSlots;
 
     public PlotEntity fromModel(CreatePlotRequestModel requestModel) {
         this.name = requestModel.getName();
         this.status = PlotStatusEnum.IDLE.name();
         this.timeSlots = new ArrayList<>();
+        this.creationDate = new Date(System.currentTimeMillis());
 
         return this;
     }

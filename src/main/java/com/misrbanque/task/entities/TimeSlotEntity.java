@@ -28,14 +28,19 @@ public class TimeSlotEntity {
     @Column(name = "water_amount", nullable = false)
     private Integer waterAmount;
 
+    @Basic
+    @Column(name = "plot_id", nullable = false)
+    private Long plotId;
+
     @ManyToOne
-    @JoinColumn(name = "id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "plot_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private PlotEntity plot;
 
-    public TimeSlotEntity fromModel(TimeSlot timeSlot) {
+    public TimeSlotEntity fromModel(Long plotId, TimeSlot timeSlot) {
         this.startTime = timeSlot.getStartTime();
         this.durationInMinutes = timeSlot.getDurationInMinutes();
         this.waterAmount = timeSlot.getWaterAmount();
+        this.plotId = plotId;
 
         return this;
     }
