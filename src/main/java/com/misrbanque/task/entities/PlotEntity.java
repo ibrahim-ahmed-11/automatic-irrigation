@@ -34,7 +34,7 @@ public class PlotEntity {
     @OneToMany(mappedBy = "plot")
     private Collection<TimeSlotEntity> timeSlots;
 
-    public PlotEntity fromModel(CreatePlotRequestModel requestModel){
+    public PlotEntity fromModel(CreatePlotRequestModel requestModel) {
         this.name = requestModel.getName();
         this.status = PlotStatusEnum.IDLE.name();
         this.timeSlots = new ArrayList<>();
@@ -42,7 +42,7 @@ public class PlotEntity {
         return this;
     }
 
-    public void fromModel(EditPlotRequestModel requestModel){
+    public void fromModel(EditPlotRequestModel requestModel) {
         this.name = requestModel.getName();
     }
 

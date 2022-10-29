@@ -1,4 +1,4 @@
-package com.misrbanque.task.infrastructure.repositories;
+package com.misrbanque.task.configuration.repositories;
 
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;

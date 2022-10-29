@@ -24,6 +24,8 @@ public class ScheduledJob implements Runnable {
     private final Long plotId;
     @Getter
     private final Long timeSlotId;
+    private final ScheduledExecutorService scheduler;
+    private final Runnable runnableCommand;
     @Getter
     @Setter
     private Integer waterAmount;
@@ -31,9 +33,6 @@ public class ScheduledJob implements Runnable {
     @Setter
     private Time startTime;
     private long periodInMilliseconds;
-
-    private final ScheduledExecutorService scheduler;
-    private final Runnable runnableCommand;
 
     public ScheduledJob(Long plotId, Long timeSlotId, Time startTime, long periodInMinutes, Integer waterAmount, SensorIntegrationService sensorIntegrationService) {
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -44,7 +43,7 @@ public class ScheduledJob implements Runnable {
         this.runnableCommand = () -> {
             try {
                 SensorRequest request = new SensorRequest().fromConfigurationData(this.plotId, this.waterAmount);
-                sensorIntegrationService.sendSensorReading(request);
+                sensorIntegrationService.handleSensorReading(request);
             } catch (Exception ex) {
                 log.error("Exception was thrown while execution: " + ex.getMessage());
             }
@@ -57,7 +56,7 @@ public class ScheduledJob implements Runnable {
         scheduler.scheduleAtFixedRate(runnableCommand, computeNextDelay(startTime), periodInMilliseconds, TimeUnit.MILLISECONDS);
     }
 
-    public void updateTask(EditTimeSlotRequestModel editTimeSlotRequestModel){
+    public void updateTask(EditTimeSlotRequestModel editTimeSlotRequestModel) {
         this.startTime = editTimeSlotRequestModel.getStartTime();
         this.waterAmount = editTimeSlotRequestModel.getWaterAmount();
         this.periodInMilliseconds = TimeUnit.MINUTES.toMillis(editTimeSlotRequestModel.getDurationInMinutes());
@@ -68,8 +67,7 @@ public class ScheduledJob implements Runnable {
             scheduler.shutdown();
     }
 
-    private long computeNextDelay(Time time)
-    {
+    private long computeNextDelay(Time time) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startTime);
         int targetHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -80,7 +78,7 @@ public class ScheduledJob implements Runnable {
         ZoneId currentZone = ZoneId.systemDefault();
         ZonedDateTime zonedNow = ZonedDateTime.of(localNow, currentZone);
         ZonedDateTime zonedNextTarget = zonedNow.withHour(targetHour).withMinute(targetMin).withSecond(targetSec);
-        if(zonedNow.compareTo(zonedNextTarget) > 0)
+        if (zonedNow.compareTo(zonedNextTarget) > 0)
             zonedNextTarget = zonedNextTarget.plusDays(1);
 
         Duration duration = Duration.between(zonedNow, zonedNextTarget);

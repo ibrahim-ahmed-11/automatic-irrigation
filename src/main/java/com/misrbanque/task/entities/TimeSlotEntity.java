@@ -32,7 +32,7 @@ public class TimeSlotEntity {
     @JoinColumn(name = "id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private PlotEntity plot;
 
-    public TimeSlotEntity fromModel(TimeSlot timeSlot){
+    public TimeSlotEntity fromModel(TimeSlot timeSlot) {
         this.startTime = timeSlot.getStartTime();
         this.durationInMinutes = timeSlot.getDurationInMinutes();
         this.waterAmount = timeSlot.getWaterAmount();
@@ -40,7 +40,7 @@ public class TimeSlotEntity {
         return this;
     }
 
-    public void fromModel(EditTimeSlotRequestModel timeSlotModel){
+    public void fromModel(EditTimeSlotRequestModel timeSlotModel) {
         this.startTime = timeSlotModel.getStartTime();
         this.durationInMinutes = timeSlotModel.getDurationInMinutes();
         this.waterAmount = timeSlotModel.getWaterAmount();

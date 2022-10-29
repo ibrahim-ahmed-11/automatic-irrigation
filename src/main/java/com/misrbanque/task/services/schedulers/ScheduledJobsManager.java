@@ -1,7 +1,6 @@
 package com.misrbanque.task.services.schedulers;
 
 import com.misrbanque.task.entities.PlotEntity;
-import com.misrbanque.task.models.integration.SensorRequest;
 import com.misrbanque.task.models.time_slots.EditTimeSlotRequestModel;
 import com.misrbanque.task.repositories.PlotsRepository;
 import com.misrbanque.task.services.contracts.SensorIntegrationService;
@@ -9,10 +8,6 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -81,15 +76,15 @@ public class ScheduledJobsManager {
         startTask(plotId, timeSlotId);
     }
 
-    private List<ScheduledJob> getTasks(Predicate<? super ScheduledJob> predicate){
+    private List<ScheduledJob> getTasks(Predicate<? super ScheduledJob> predicate) {
         return scheduledJobs.stream().filter(predicate).collect(Collectors.toList());
     }
 
-    private List<ScheduledJob> getTasks(Long plotId, Long timeSlotId){
+    private List<ScheduledJob> getTasks(Long plotId, Long timeSlotId) {
         return scheduledJobs.stream().filter(scheduledJob -> scheduledJob.getPlotId().equals(plotId) && scheduledJob.getTimeSlotId().equals(timeSlotId)).collect(Collectors.toList());
     }
 
-    public void editTask(Long plotId, EditTimeSlotRequestModel newTimeSlotData){
+    public void editTask(Long plotId, EditTimeSlotRequestModel newTimeSlotData) {
         List<ScheduledJob> tasks = getTasks(plotId, newTimeSlotData.getTimeSlotId());
         tasks.forEach(task -> {
             task.updateTask(newTimeSlotData);
@@ -97,7 +92,7 @@ public class ScheduledJobsManager {
         });
     }
 
-    public void deleteTask(Long timeSlotId){
+    public void deleteTask(Long timeSlotId) {
         stopTask(timeSlotId);
         scheduledJobs.removeIf(scheduledJob -> scheduledJob.getTimeSlotId().equals(timeSlotId));
     }

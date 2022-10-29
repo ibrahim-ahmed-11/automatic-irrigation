@@ -1,7 +1,6 @@
 package com.misrbanque.task.models.time_slots;
 
 import com.misrbanque.task.entities.TimeSlotEntity;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,7 @@ public class TimeSlot {
 
     private int waterAmount;
 
-    public TimeSlot fromEntity(TimeSlotEntity timeSlotEntity){
+    public TimeSlot fromEntity(TimeSlotEntity timeSlotEntity) {
         this.startTime = timeSlotEntity.getStartTime();
         this.durationInMinutes = timeSlotEntity.getDurationInMinutes();
         this.waterAmount = timeSlotEntity.getWaterAmount();
